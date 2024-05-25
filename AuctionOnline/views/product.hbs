@@ -1,0 +1,386 @@
+{{#section 'js'}}
+
+    <script>
+
+
+        let valueSort = "";
+
+        $(document).ready(function () {
+            $("#sort").change(function () {
+                var sort = $("#sort").val();
+                sort = +sort;
+                const urlSearchParams = new URLSearchParams(window.location.search);
+                const params = Object.fromEntries(urlSearchParams.entries());
+                if (sort === 1) {
+                    params.sort = "currentPrice";
+                } else if (sort === 2) {
+                    params.sort = "expDate";
+                }
+                // deparameterize the url
+                url = window.location.pathname + "?" + $.param(params);
+                window.location.href = url;
+            });
+        });
+
+
+        $(document).ready(function () {
+            $("#number-product").change(function () {
+                var number = $("#number-product").val();
+                number = +number;
+
+                const urlSearchParams = new URLSearchParams(window.location.search);
+                const params = Object.fromEntries(urlSearchParams.entries());
+
+                if (number === 1) {
+                    params.limit = "12";
+                } else if (number === 2) {
+                    params.limit = "9";
+                } else if (number === 3) {
+                    params.limit = "6";
+                }
+                // deparameterize the url
+                url = window.location.pathname + "?" + $.param(params);
+                window.location.href = url;
+            });
+
+        });
+
+
+        function handleCategory(category) {
+            const urlSearchParams = new URLSearchParams(window.location.search);
+            const params = Object.fromEntries(urlSearchParams.entries());
+            params.category = category;
+            // deparameterize the url
+            url = window.location.pathname + "?" + $.param(params);
+            window.location.href = url;
+        }
+
+        // ENTER KEY PRESSED IN SEAERCH BAR
+        $(document).ready(function () {
+            $("#search").keypress(function (event) {
+                if (event.which === 13) {
+                    event.preventDefault();
+                    var search = $("#search").val();
+                    const urlSearchParams = new URLSearchParams(window.location.search);
+                    const params = Object.fromEntries(urlSearchParams.entries());
+                    params.search = search;
+                    url = window.location.pathname + "?" + $.param(params);
+                    window.location.href = url;
+                }
+            });
+        });
+
+        // CLICK BUTTON SEARCH
+        function handleSearch() {
+            let search = $("#search").val();
+            const urlSearchParams = new URLSearchParams(window.location.search);
+            const params = Object.fromEntries(urlSearchParams.entries());
+            params.search = search;
+            url = window.location.pathname + "?" + $.param(params);
+            window.location.href = url;
+        }
+
+        async function handledWishlist(id) {
+            const data = await axios.post(`user/wishlist?id=${id}`).then((reponse) => {
+                location.reload();
+            })
+        }
+
+        function handleSubmit(id) {
+            window.location.href = `/product/detail/?id=${id}`;
+        }
+    </script>
+
+
+
+
+{{/section}}
+
+
+<style>
+    .btn-heart {
+        background-color: rgb(255, 255, 255);
+        border-color: rgb(101, 101, 101);
+        border-radius: 50%;
+        border-style: solid;
+        border-width: 1px;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        padding: 5px 4px 1px;
+    }
+
+    .icon-heart {
+        max-height: 28px;
+        display: inline-block;
+    }
+
+    .report_text {
+        font-size: 18px;
+        color: #000;
+        padding: 1rem 1rem;
+    }
+
+    .noresultsuggestion {
+        background: #fff;
+    }
+
+    li .active-category {
+        color: white !important;
+        background: linear-gradient(90deg, rgb(2, 0, 36) 0%, rgba(249, 22, 242, 0.5144258386948529) 0%, rgb(219, 45, 244) 0%, rgb(8, 182, 216) 100%);
+    }
+
+    li .active-category:hover {
+        color: black !important;
+    }
+
+
+</style>
+
+{{>breadcrumb_product this}}
+{{breadcrumb_product}}
+
+<div class="container-fluid d-lg-flex">
+
+
+    <div class="row">
+    </div>
+    {{>sidebar_product this}}
+    {{sidebar_product}}
+
+    <div class="container-fluid col-12 col-sm-12 col-lg-9 col-md-9 ml-lg-0 ml-3 pl-0">
+
+
+        <div class="product-header m-17">
+            <div class="product-header-item">
+                <div class="item">Sắp xếp :</div>
+
+                <select id="sort" class="nice-select browser-default custom-select">
+                    {{{checkSort sort}}}
+                </select>
+            </div>
+            <div class="product-header-item">
+                <div class="item">Hiển thị :</div>
+
+                <select id="number-product" class="nice-select browser-default custom-select">
+                    {{{checkLimit maxItems}}}
+                </select>
+            </div>
+
+            <div class="d-flex">
+                <input class="form-control me-2" id="search" placeholder="Tìm kiếm sản phẩm"
+                       aria-label="Search">
+                <button class="btn btn-outline-success" onclick="handleSearch()">Tìm kiếm</button>
+            </div>
+
+        </div>
+
+
+        {{!-- Start Row --}}
+
+        <div class="row">
+
+            {{!-- Start Col --}}
+            <div class="col">
+                {{#each products}}
+                {{!-- Start Item --}}
+
+                    <div class="auction-item">
+                        {{#if isNew}}
+                        <div style="color: aliceblue;
+                                    padding: 5px 5px;
+                                    margin: 5px 5px;
+                                    border-radius:15px;
+                                    background-color: rgb(20, 204, 228);
+                                    position: absolute;
+                                    left: 0px;
+                                    top: 0px;
+                                    z-index: 10;">
+                            NEW
+                            <i class="fas fa-splotch" style="color: rgb(243, 239, 10);"></i>
+                        </div>
+                        {{/if}}
+
+                        {{#if isBidding}}
+                        <div style="color: aliceblue;
+                                    padding: 5px 5px;
+                                    margin: 5px 5px;
+                                    border-radius:15px;
+                                    background-color: rgb(13, 219, 65);
+                                    position: absolute;
+                                    left: 0px;
+                                    top: 33%;
+                                    z-index: 10;">
+                            BIDDING
+                            <i class="fas fa-hourglass" style="color: rgb(248, 53, 238);"></i>
+                        </div>
+                        {{/if}}
+                        <div class="auction-item-thumb">
+
+                            <a class="thumb-img" href="/product/detail/?id={{_id}}">
+                                <img src={{getThumbnail images}} alt="item">
+                            </a>
+
+                            {{#if ../username}}
+
+
+                                {{#if isWishlist}}
+                                    <a class="star-icon thumb-icon" style="cursor: pointer"
+                                       onclick="handledWishlist(`{{this._id}}`)">
+                                        <button class="btn btn-heart d-inline-block"
+                                                style="position: relative;"><i
+                                                class="icon-heart fa fa-heart"
+                                                aria-hidden="true"
+                                                style="position: absolute;left: 6px;top: 6.9px; color: red;"
+                                                id="fa-{{this._id}}"></i>
+                                        </button>
+                                    </a>
+                                {{else}}
+
+                                    <a class="star-icon thumb-icon" style="cursor: pointer"
+                                       onclick="handledWishlist(`{{this._id}}`)">
+                                        <button class="btn btn-heart d-inline-block"
+                                                style="position: relative;"><i
+                                                class="icon-heart far fa-heart"
+                                                aria-hidden="true"
+                                                style="position: absolute;left: 6px;top: 6.9px; color: red;"
+                                                id="fa-{{this._id}}"></i>
+                                        </button>
+                                    </a>
+
+                                {{/if}}
+
+                            {{/if}}
+
+
+                        </div>
+                        <div class="auction-item-content">
+                            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 270px;
+                            color:blue; font-weight: 600;">
+                                {{name}}
+                            </div>
+
+                            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color:black; font-weight: 550;">
+                                Ngày bán: {{sellDate}}
+                            </div>
+
+                            {{#if currentWinner}}
+                                <div style="color:black; font-weight: 550;">
+                                    Người đang trả giá cao nhất:<br>{{currentWinner}}
+                                </div>
+                            {{else}}
+                                <div style="color:black; font-weight: 550;">
+                                    Hãy là người đầu tiên trả giá:<br>&nbsp;
+                                </div>
+                            {{/if}}
+
+
+                            <div class="bid-area d-flex justify-content-center">
+                                <div class="bid-amount current-price d-flex">
+                                    <div class="icon">
+                                        <i class="fa fa-gavel fa-2x" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="amount-content">
+                                        <div class="current">
+                                            Giá hiện tại
+                                        </div>
+                                        <div class="amount">
+                                            {{commaNumber currentPrice}}
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="bid-amount buy-price d-flex">
+                                    <div class="icon">
+                                        <i class="fas fa-wallet  fa-2x"></i>
+                                    </div>
+
+                                    <div class="amount-content">
+                                        <div class="buy">
+                                            Mua ngay
+                                        </div>
+                                        {{#if bestPrice}}
+                                            <div class="amount">
+                                                {{commaNumber bestPrice}}
+                                            </div>
+                                        {{else}}
+                                            <div class="amount">
+                                                ---
+                                            </div>
+                                        {{/if}}
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="countdown-area d-flex ">
+
+                                <div id="{{this._id}}" class="countdown product-one">
+                                </div>
+                                <span class="total-bids">
+                                {{numberBidders}} bids
+                            </span>
+                            </div>
+                            <div class="bid-now" type="button">
+                                <a style="cursor: pointer" onclick="handleSubmit(`{{this._id}}`)">
+                                    Bid now
+                                </a>
+                            </div>
+                        </div>
+
+
+                        <script async>
+                            function countDown(dateExp) {
+
+                                var countDownDate = +dateExp;
+                                var distance;
+
+                                // Update the count down every 1 second
+                                var x = setInterval(function () {
+                                    distance = countDownDate - Date.now();
+                                    // Time calculations for days, hours, minutes and seconds
+                                    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                                    $("#{{this._id}}").html(days + "d : " + hours + "h :" + minutes + "m :" + seconds + "s");
+
+                                    // If the count down is finished, write some text
+                                    if (distance < 0) {
+                                        clearInterval(x);
+                                        $("#{{this._id}}").html("EXPIRED");
+                                    }
+
+                                }, 1000);
+                            }
+
+                            countDown(`{{this.expDate}}`)
+                        </script>
+                    </div>
+                {{!--End Item --}}
+
+                {{/each}}
+
+            </div>
+            {{!-- End Col --}}
+
+
+        </div>
+        {{!-- End Row --}}
+
+        {{!-- Pagination --}}
+        {{>pagination_product}}
+        {{pagination_product}}
+
+        <div>{{!-- End row --}}
+        </div>
+        <!-- end container -->
+
+
+        {{!-- End product --}}
+    </div>
+
+</div>

@@ -1,0 +1,199 @@
+<style>
+    .pagination {
+        justify-content: center;
+        margin: -5px;
+        margin-top: 35px;
+        flex-wrap: wrap;
+    }
+
+    .pagination li {
+        padding: 5px;
+    }
+
+    .pagination li a {
+        display: block;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        background: #ffffff;
+        border: 1px solid rgba(234, 234, 234, 0.1);
+        box-shadow: 0px 15px 30px 0px rgba(119, 123, 146, 0.1);
+        color: #52606d;
+        font-weight: 700;
+    }
+
+    .pagination li a.active,
+    .pagination li a:hover {
+        color: #ffffff;
+        background: -moz-linear-gradient(166deg, #f22876 0%, #942dd9 100%);
+        background: -webkit-linear-gradient(166deg, #f22876 0%, #942dd9 100%);
+        background: -ms-linear-gradient(166deg, #f22876 0%, #942dd9 100%);
+    }
+
+</style>
+
+
+<div class="container-fluid animatedParent animateOnce">
+    <div class="tab-content my-3" id="v-pills-tabContent">
+        <div class="tab-pane animated fadeInUpShort show active" id="v-pills-all" role="tabpanel"
+             aria-labelledby="v-pills-all-tab">
+            <div class="row my-3">
+                <div class="col-md-12">
+                    <div class="card r-0 shadow">
+                        <div class="table-responsive">
+                            <form>
+                                <table class="table table-striped table-hover r-0">
+                                    <thead>
+                                    <tr class="no-b">
+                                        <th style="width: 30px">
+                                        </th>
+                                        <th>USER NAME</th>
+
+                                        <th>
+                                            <div class="d-none d-lg-block">STATUS</div>
+                                        </th>
+                                        <th>
+                                            <div class="d-none d-lg-block">ROLE</div>
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    {{#each users}}
+                                        <tr>
+                                            <td>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input checkSingle"
+                                                           id="user_id_32" required><label
+                                                        class="custom-control-label" for="user_id_1"></label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <div class="avatar avatar-md mr-3 mb-2 mt-1">
+                                                        <a style="cursor: pointer;" class="avatar avatar-lg"
+                                                           onclick="handleSubmit(`{{_id}}`)">
+                                                            <img src={{this.profile.avatar}} alt="">
+                                                        </a>
+                                                    </div>
+                                                    <div>
+                                                        <div>
+                                                            <strong>{{this.profile.name}}</strong>
+                                                        </div>
+                                                        <small> {{this.profile.email}}</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                {{#if verifyEmail}}
+                                                    <div class="d-none d-lg-block"><span
+                                                            class="icon icon-circle s-18  mr-2 text-success">Email Verified</span>
+                                                    </div>
+                                                {{else}}
+                                                    <div class="d-none d-lg-block"><span
+                                                            class="icon icon-circle s-18  mr-2 text-danger">Email Not Verify</span>
+                                                    </div>
+                                                {{/if}}
+                                            </td>
+                                            <td>
+
+
+                                                {{#if isBidder}}
+                                                    <div class="d-none d-lg-block"><span
+                                                            class="r-3 badge badge-primary">{{type}}</span>
+                                                    </div>
+                                                {{else if isSeller}}
+                                                    <div class="d-none d-lg-block"><span
+                                                            class="r-3 badge badge-info">{{type}}</span>
+                                                    </div>
+                                                {{else}}
+                                                    <div class="d-none d-lg-block"><span
+                                                            class="r-3 badge badge-success">{{type}}</span>
+                                                    </div>
+                                                {{/if}}
+
+
+
+
+                                            </td>
+                                            <td>
+                                                <a style="cursor: pointer" onclick="handleSubmit(`{{_id}}`)"><i
+                                                        class="icon-eye mr-3"></i></a>
+                                            </td>
+
+
+                                            {{#if isSeller}}
+                                                <td>
+                                                    <div class="d-none d-lg-block">
+                                        <span style="cursor: pointer" class="r-10 badge badge-success"
+                                              onclick="handleDegrade(`{{this._id}}`)">Degrade</span>
+                                                    </div>
+                                                </td>
+                                            {{/if}}
+
+                                        </tr>
+                                    {{/each}}
+
+
+
+                                    </tbody>
+
+
+                                </table>
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="mt-3 pagination align-items-center justify-content-center">
+                {{{displayPagination currentPage stringQuery maxPage totalItems }}}
+            </ul>
+
+        </div>
+    </div>
+</div>
+
+
+<button id="success-message-degrade" class="d-none btn btn-primary btn-lg toast-action"
+        data-title="Hey, Bro!"
+        data-message="Degrade successfully !"
+        data-type="success"
+        data-position-class="toast-top-center">
+</button>
+
+
+<button id="alert-message-degrade" class="d-none btn btn-primary btn-lg toast-action"
+        data-title="Hey, Bro!"
+        data-message="Degrade unsuccessfully !"
+        data-type="error"
+        data-position-class="toast-top-center">
+</button>
+
+
+<script>
+    function handleDegrade(s) {
+        axios.post('/admin/degrade', {
+            id: s
+        }).then(function (response) {
+            $('#success-message-degrade').click();
+            location.reload();
+        }).catch(function (error) {
+            $('#alert-message-degrade').click();
+            location.reload();
+            console.log(error);
+        });
+    }
+
+    function handleSubmit(id) {
+        window.location.href = `/admin/user/detail?id=${id}`;
+    }
+</script>

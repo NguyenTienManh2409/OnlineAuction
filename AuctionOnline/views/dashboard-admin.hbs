@@ -1,0 +1,74 @@
+<button id="success-message-approve" class="d-none btn btn-primary btn-lg toast-action"
+        data-title="Hey, Bro!"
+        data-message="Update successfully !"
+        data-type="success"
+        data-position-class="toast-top-center">
+</button>
+
+
+<button id="success-message-upgrade" class="d-none btn btn-primary btn-lg toast-action"
+        data-title="Hey, Bro!"
+        data-message="Upgrade successfully !"
+        data-type="success"
+        data-position-class="toast-top-center">
+</button>
+
+<script>
+    function handleApprove(id) {
+        axios.post('/admin/approve', {
+            id: id
+        }).then(function (response) {
+            $('#success-message-approve').click();
+            location.reload();
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
+
+    function handleLink(id) {
+        window.location.href = '/admin/user/detail?id=' + id;
+    }
+</script>
+
+
+<div class="container-fluid relative animatedParent animateOnce my-3">
+    Pending list upgrade seller
+    <div class=" row my-3">
+        <div class="col-md-12">
+            <div class=" card no-b">
+                <div class="card-body">
+                    <table class="table table-hover earning-box">
+                        <tbody>
+                        {{#each users}}
+                            <tr class="no-b">
+                                <td class="w-10">
+                                    <a style="cursor: pointer;" class="avatar avatar-lg"
+                                       onclick="handleLink(`{{_id}}`)">
+                                        <img src={{this.profile.avatar}} alt="">
+                                    </a>
+                                </td>
+                                <td>
+                                    <h6>{{this.profile.name}}</h6>
+                                    <small class="text-muted">{{this.profile.email}}</small>
+                                </td>
+                                <td>
+                                    <div class="d-none d-lg-block"><span
+                                            class="r-3 badge badge-info">{{type}}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-none d-lg-block">
+                                        <span style="cursor: pointer" class="r-10 badge badge-success"
+                                              onclick="handleApprove(`{{this._id}}`)">Approve</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

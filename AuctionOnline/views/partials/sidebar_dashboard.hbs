@@ -1,0 +1,73 @@
+<!-- Menu -->
+<div class="col-sm-10 col-md-7 col-lg-4">
+  <div class="dashboard-widget sticky-menu">
+    <div class="dashboard-user">
+      <div class="thumb-area">
+        <div class="thumb">
+            {{#if userLocal.profile.avatar}}
+          <img src="{{userLocal.profile.avatar}}" alt="user" />
+          {{else}}
+          <img src="/img/c1.png" alt="user" />
+          {{/if}}
+        </div>
+        <label for="profile-pic" class="profile-pic-edit">
+          <i class="fas fa-pencil-alt"></i>
+        </label>
+        <input type="file" id="profile-pic" class="d-none" />
+      </div>
+      <div class="content">
+        {{#if auth}}
+      <h5 class="title">{{user.profile.name}}</h5>
+        <span class="user-email">{{user.profile.email}}</span>
+      </div>
+      {{/if}}
+
+    </div>
+    <ul class="dashboard-menu">
+      <li>
+        <a href="/user?id={{userLocal._id}}">
+          <i class="fab fa-dashcube"></i>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="/user/profile?id={{userLocal._id}}">
+          <i class="fas fa-user-cog"></i>
+          Profile
+
+        </a>
+      </li>
+      <li>
+        <a href="/user/mybid?id={{userLocal._id}}">
+          <i class="fas fa-gavel"></i>
+          My pid
+        </a>
+      </li>
+      <li>
+        <a href="/user/winningbid?id={{userLocal._id}}">
+          <i class="fas fa-trophy"></i>
+          Winning bid
+        </a>
+      </li>
+      <li>
+        <a href="/user/wishlist?id={{userLocal._id}}">
+          <i class="fas fa-heart"></i>
+          Wish list
+        </a>
+      </li>
+      <li>
+        <a href="/user/feedback?id={{userLocal._id}}">
+          <i class="fas fa-comment"></i>
+          Feedback
+        </a>
+      </li>
+      <li>
+        <a href="/user/myproduct?id={{userLocal._id}}">
+          <i class="fas fa-hourglass"></i>
+          My product
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- End menu -->

@@ -1,0 +1,270 @@
+{{#section 'js'}}
+ <script>
+        function editFocus() {
+            var par = $(event.target).parent().parent();
+            var childs = par.find('.info-value');
+            var btn = par.find('.update-btn');
+            
+
+             if (btn.css('display') == 'none') {
+                btn.show();
+            } else {
+                btn.hide();
+            }
+
+            childs.each(function (index) {
+                var i = $(this).find('input');
+                var attr = i.attr('readonly');
+
+                if (typeof attr !== 'undefined' && attr !== false) {
+                    i.prop('readonly', false);
+                    i.focus();
+                } else {
+                    i.prop('readonly', true);
+                    i.blur();
+                }
+            })
+        };
+        $('.edit').click(editFocus);
+    </script>
+    {{/section}}
+
+
+<div class="container mb-250">
+        <div class="row justify-content-center">
+            <div class="col d-flex m-3" style="height: 100px;">
+                <h1 style="align-items: center; margin: auto;">DASHBOARD</h1>
+            </div>
+        </div>
+    </div>
+
+
+<section>
+        <div class="container">
+            <div class="row justify-content-center">
+                {{> sidebar_dashboard}}
+
+                <!-- Contentt -->
+                <div class="col-lg-8">
+                    <div class="row">
+                        <!-- Profile -->
+                        <div class="col-12">
+                            <div class="dash-pro-item dashboard-widget">
+                                <div class="header">
+                                    <h4 class="title">
+                                        Personal Details
+                                    </h4>
+                                    {{#if owner}}
+                                    <span class="edit">
+                                        <i class="fas fa-edit    "></i>
+                                        Edit
+                                    </span>
+                                    {{/if}}
+
+                                </div>
+                                <form method="post" action="">
+                                    <div class="row justify-content-center">
+                                        <div class="col-9" style="justify-content: center;">
+                                            <ul class="dash-pro-body">
+                                                <!-- Info item -->
+                                                <li>
+                                                    <div class="info-name">
+                                                        Name
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <input name="name" type="text" value="{{user.profile.name}}" readonly>
+                                                    </div>
+                                                </li>
+                                                <!-- End Info item -->
+                                                <!-- Info item -->
+                                                {{#if user.profile.address}}
+                                                <li>
+                                                    <div class="info-name">
+                                                        Address
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <input name="address" type="text" value="{{user.profile.address}}" readonly>
+                                                    </div>
+                                                </li>
+                                                {{/if}}
+                                                <!-- End Info item -->
+                                            </ul>
+                                            <div class="update-btn" style=" margin: 5px 5px;display: none;">
+                                                        <button type="submit" class="btn btn-success">Update</button>
+                                                    </div>
+                                        </div>
+                                        <div class="col-3" style="text-align: right; top:-10px">
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- End Profile -->
+
+                        <!-- Profile -->
+                        <div class="col-12">
+                            <div class="dash-pro-item dashboard-widget">
+                                <div class="header">
+                                    <h4 class="title">
+                                        Email Address
+                                    </h4>
+                                    {{#if owner}}
+                                    <span class="edit">
+                                        <i class="fas fa-edit    "></i>
+                                        Edit
+                                    </span>
+                                    {{/if}}
+
+                                </div>
+                                <form method="post" action="">
+                                    <div class="row justify-content-center">
+
+                                        <div class="col-9" style="justify-content: center;">
+                                            <ul class="dash-pro-body">
+                                                <!-- Info item -->
+                                                <li>
+                                                    <div class="info-name">
+                                                        Email
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <input name="email" type="text" value="{{user.profile.email}}" readonly>
+                                                    </div>
+                                                </li>
+                                                <!-- End Info item -->
+                                            </ul>
+                                            <div class="update-btn" style=" margin: 5px 5px;display: none;">
+                                                        <button type="submit" class="btn btn-success">Update</button>
+                                                    </div>
+                                        </div>
+                                        <div class="col-3" style="text-align: right; top:-10px">
+
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- End Profile -->
+
+                        <!-- Profile -->
+                        <div class="col-12">
+                            <div class="dash-pro-item dashboard-widget">
+                                <div class="header">
+                                    <h4 class="title">
+                                        Role
+                                    </h4>
+                                    {{#if owner}}
+                                    {{#if isBidder}}
+                                    <span style="text-align: right; width: 150px;" >
+                                        <a href="/user/upgraderole?id={{userLocal._id}}">
+                                        <i class="fa fa-level-up" aria-hidden="true"></i>
+                                        Promotion
+                                        </a>
+                                    </span>
+                                    {{/if}}
+                                    {{/if}}
+                                </div>
+                                <form method="post" action="">
+                                    <div class="row justify-content-center">
+
+                                        <div class="col-9" style="justify-content: center;">
+                                            <ul class="dash-pro-body">
+                                                <!-- Info item -->
+                                                <li>
+                                                    <div class="info-name">
+                                                        Type
+                                                    </div>
+                                                    <div class="info-value">
+                                                        {{#if isPending}}
+                                                        <input type="text" value="{{user.type}} (pending)" readonly>
+                                                        {{else}}
+                                                        <input type="text" value="{{user.type}}" readonly>
+                                                        {{/if}}
+                                                    </div>
+                                                </li>
+                                                <!-- End Info item -->
+
+                                            </ul>
+                                            
+                                        </div>
+                                        <div class="col-3" style="text-align: right; top:-10px">
+
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- End Profile -->
+
+                        <!-- Profile -->
+                        {{#if islocal}}
+                        <div class="col-12">
+                            <div class="dash-pro-item dashboard-widget">
+                                <div class="header">
+                                    <h4 class="title">
+                                        Security
+                                    </h4>
+                                    {{#if owner}}
+                                     <span class="edit">
+                                        <i class="fas fa-edit    "></i>
+                                        Edit
+                                    </span>
+                                    {{/if}}
+                                </div>
+                                <form method="post" action="">
+                                    <div class="row justify-content-center">
+                                        <div class="col-9" style="justify-content: center;">
+                                            <ul class="dash-pro-body">
+                                                <!-- Info item -->
+                                                <li>
+                                                    <div class="info-name">
+                                                        Old password
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <input name="oldpass" type="password" value="" readonly>
+                                                    </div>
+                                                </li>
+                                                <!-- End Info item -->
+                                                <!-- Info item -->
+                                                <li>
+                                                    <div class="info-name">
+                                                        New password
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <input name="newpass" type="password" value="" readonly>
+                                                    </div>
+                                                </li>
+                                                <!-- End Info item -->
+                                                <!-- Info item -->
+                                                <li>
+                                                    <div class="info-name">
+                                                        Confirm password
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <input name="confirmpass" type="password" value="" readonly>
+                                                    </div>
+                                                </li>
+                                                <!-- End Info item -->
+                                            </ul>
+                                            <div class="update-btn" style=" margin: 5px 5px; display: none;">
+                                                        <button type="submit" class="btn btn-success">Update</button>
+                                                    </div>
+                                        </div>
+                                        <div class="col-3" style="text-align: right; top:-10px">
+
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        {{/if}}
+                        <!-- End Profile -->
+                    </div>
+                </div>
+                <!-- End content -->
+            </div>
+        </div>
+</section>

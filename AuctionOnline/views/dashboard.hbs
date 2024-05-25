@@ -1,0 +1,76 @@
+
+<div class="container">
+        <div class="row justify-content-center">
+            <div class="col d-flex m-3" style="height: 100px;">
+                <h1 style="align-items: center; margin: auto;">DASHBOARD</h1>
+            </div>
+        </div>
+    </div>
+
+    <section>
+        <div class="container">
+            <div class="row justify-content-center">
+            {{> sidebar_dashboard}}
+
+             <!-- Content -->
+                <div class="col-lg-8">
+                    <!-- Dashboard -->
+                    <div class="dashboard-widget mb-40">
+                        <div class="dashboard-title">
+                            <h4 class="title">My activity</h4>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-4 col-sm-6">
+                                <div class="dashboard-item">
+                                    <div class="thumb">
+                                        <img src="http://pixner.net/sbidu/main/assets/images/dashboard/01.png" alt="">
+                                    </div>
+                                    <div class="content">
+                                        <h2 class="title">
+                                            <span class="counter">
+                                                {{user.point}}
+                                            </span>
+                                        </h2>
+                                        <h6 class="info">Points</h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-sm-6">
+                                <div class="dashboard-item">
+                                    <div class="thumb">
+                                        <img src="http://pixner.net/sbidu/main/assets/images/dashboard/01.png" alt="">
+                                    </div>
+                                    <div class="content">
+                                        <h2 class="title">
+                                            <span class="counter">
+                                                {{activebid}}
+                                            </span>
+                                        </h2>
+                                        <h6 class="info">My bid</h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-sm-6">
+                                <div class="dashboard-item">
+                                    <div class="thumb">
+                                        <img src="http://pixner.net/sbidu/main/assets/images/dashboard/01.png" alt="">
+                                    </div>
+                                    <div class="content">
+                                        <h2 class="title">
+                                            <span class="counter">
+                                                {{itemwon}}
+                                            </span>
+                                        </h2>
+                                        <h6 class="info">Winning items</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Dashboard -->
+                    </div>
+        </div>
+        
+    </section>
